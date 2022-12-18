@@ -9,7 +9,7 @@ html = """
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Chat</title>
+        <title>Test</title>
     </head>
     <body>
         <h1>Тестовое задание<br>введите текст:</h1>
