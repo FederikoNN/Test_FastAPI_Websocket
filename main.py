@@ -61,4 +61,4 @@ async def websocket_endpoint(websocket: WebSocket):
         msg = json.loads(data)
         msg['message_date'] = datetime.datetime.now().strftime(
             '%d-%m-%Y %H:%M')
-        await websocket.send_text(json.dumps(msg))
+        await websocket.send_json(msg)
