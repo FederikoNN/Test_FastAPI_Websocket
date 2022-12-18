@@ -1,5 +1,11 @@
 # Test_FastAPI_Websocket
 
+## Клонирование репозитория с GitHub:
+
+```
+https://github.com/FederikoNN/Test_FastAPI_Websocket
+```
+
 ## Установка pipenv:
 
 ```
