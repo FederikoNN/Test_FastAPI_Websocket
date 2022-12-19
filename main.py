@@ -17,18 +17,20 @@ html = """
             <input type="text" id="messageText" autocomplete="off"/>
             <button>Отправить</button>
         </form>
-        <ol id='messages'>
-        </ol>
+        <ul id='messages'>
+        </ul>
         <script>
             var ws = new WebSocket("ws://localhost:8000/ws");
             ws.onmessage = function(event) {
                 var messages = document.getElementById('messages')
-                var message = document.createElement('li')
+                var message = document.createElement('p')
                 msg_json = JSON.parse(event.data)
+                msg_number = msg_json['message_number']
                 msg_date = msg_json['message_date']
                 msg_text = msg_json['send_message']
-                var content = document.createTextNode('Вы написали: "' + 
-                msg_text + '". Время публикации: ' + msg_date)
+                var content = document.createTextNode(msg_number + 
+                '. Вы написали: "' + msg_text + '". Время публикации: ' + 
+                msg_date)
                 message.appendChild(content)
                 messages.appendChild(message)
             };
@@ -53,12 +55,15 @@ async def get():
     return HTMLResponse(html)
 
 
-@app.websocket("/ws")
+@app.websocket_route("/ws")
 async def websocket_endpoint(websocket: WebSocket):
+    msg_number = 0
     await websocket.accept()
     while True:
         data = await websocket.receive_text()
+        msg_number += 1
         msg = json.loads(data)
+        msg['message_number'] = msg_number
         msg['message_date'] = datetime.datetime.now().strftime(
             '%d-%m-%Y %H:%M')
         await websocket.send_json(msg)
